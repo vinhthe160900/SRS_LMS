@@ -16,7 +16,7 @@ namespace SRS_LMS.Migrations
                     RoleId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     RoleName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Status = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Status = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -30,8 +30,7 @@ namespace SRS_LMS.Migrations
                     SubjectId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     SubjectName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    NumberOfPeriod = table.Column<int>(type: "int", nullable: false),
-                    ExamId = table.Column<int>(type: "int", nullable: false)
+                    NumberOfPeriod = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -39,7 +38,7 @@ namespace SRS_LMS.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Types",
+                name: "TypeExams",
                 columns: table => new
                 {
                     TypeExamId = table.Column<int>(type: "int", nullable: false)
@@ -48,7 +47,39 @@ namespace SRS_LMS.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Types", x => x.TypeExamId);
+                    table.PrimaryKey("PK_TypeExams", x => x.TypeExamId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Users",
+                columns: table => new
+                {
+                    UserId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    PasswordHash = table.Column<byte[]>(type: "varbinary(max)", nullable: true),
+                    PasswordSalt = table.Column<byte[]>(type: "varbinary(max)", nullable: true),
+                    FirstName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Image = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Address = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    DateOfBirth = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    VerificationToken = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    VerifiedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    PasswordResetToken = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ResetTokenExpires = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    RoleId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Users", x => x.UserId);
+                    table.ForeignKey(
+                        name: "FK_Users_Roles_RoleId",
+                        column: x => x.RoleId,
+                        principalTable: "Roles",
+                        principalColumn: "RoleId",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -61,8 +92,7 @@ namespace SRS_LMS.Migrations
                     StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     EndDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Status = table.Column<bool>(type: "bit", nullable: false),
-                    UserId = table.Column<int>(type: "int", nullable: false),
-                    SubjectId = table.Column<int>(type: "int", nullable: true)
+                    SubjectId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -71,7 +101,8 @@ namespace SRS_LMS.Migrations
                         name: "FK_Classes_Subjects_SubjectId",
                         column: x => x.SubjectId,
                         principalTable: "Subjects",
-                        principalColumn: "SubjectId");
+                        principalColumn: "SubjectId",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -94,7 +125,7 @@ namespace SRS_LMS.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Question",
+                name: "Questions",
                 columns: table => new
                 {
                     QuestionId = table.Column<int>(type: "int", nullable: false)
@@ -109,9 +140,9 @@ namespace SRS_LMS.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Question", x => x.QuestionId);
+                    table.PrimaryKey("PK_Questions", x => x.QuestionId);
                     table.ForeignKey(
-                        name: "FK_Question_Subjects_SubjectId",
+                        name: "FK_Questions_Subjects_SubjectId",
                         column: x => x.SubjectId,
                         principalTable: "Subjects",
                         principalColumn: "SubjectId",
@@ -145,10 +176,9 @@ namespace SRS_LMS.Migrations
                 {
                     ExamId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     ExamName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ContentExam = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ExamDte = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ExamDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Time = table.Column<float>(type: "real", nullable: false),
-                    Unit = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    DVT = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Status = table.Column<bool>(type: "bit", nullable: false),
                     SubjectId = table.Column<int>(type: "int", nullable: false),
                     TypeExamId = table.Column<int>(type: "int", nullable: false)
@@ -163,47 +193,10 @@ namespace SRS_LMS.Migrations
                         principalColumn: "SubjectId",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Exams_Types_TypeExamId",
+                        name: "FK_Exams_TypeExams_TypeExamId",
                         column: x => x.TypeExamId,
-                        principalTable: "Types",
+                        principalTable: "TypeExams",
                         principalColumn: "TypeExamId",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Users",
-                columns: table => new
-                {
-                    UserId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    UserName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    UserPassword = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    FirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Image = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Address = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    DateOfBirth = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    IsEmailConfirmed = table.Column<bool>(type: "bit", nullable: false),
-                    ROleId = table.Column<int>(type: "int", nullable: false),
-                    Role = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ClassId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Users", x => x.UserId);
-                    table.ForeignKey(
-                        name: "FK_Users_Classes_ClassId",
-                        column: x => x.ClassId,
-                        principalTable: "Classes",
-                        principalColumn: "ClassId",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Users_Roles_ROleId",
-                        column: x => x.ROleId,
-                        principalTable: "Roles",
-                        principalColumn: "RoleId",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -249,8 +242,7 @@ namespace SRS_LMS.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Exams_SubjectId",
                 table: "Exams",
-                column: "SubjectId",
-                unique: true);
+                column: "SubjectId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Exams_TypeExamId",
@@ -258,8 +250,8 @@ namespace SRS_LMS.Migrations
                 column: "TypeExamId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Question_SubjectId",
-                table: "Question",
+                name: "IX_Questions_SubjectId",
+                table: "Questions",
                 column: "SubjectId");
 
             migrationBuilder.CreateIndex(
@@ -278,23 +270,21 @@ namespace SRS_LMS.Migrations
                 column: "SubjectId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Users_ClassId",
+                name: "IX_Users_RoleId",
                 table: "Users",
-                column: "ClassId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Users_ROleId",
-                table: "Users",
-                column: "ROleId");
+                column: "RoleId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "Classes");
+
+            migrationBuilder.DropTable(
                 name: "Documents");
 
             migrationBuilder.DropTable(
-                name: "Question");
+                name: "Questions");
 
             migrationBuilder.DropTable(
                 name: "Results");
@@ -309,16 +299,13 @@ namespace SRS_LMS.Migrations
                 name: "Users");
 
             migrationBuilder.DropTable(
-                name: "Types");
+                name: "Subjects");
 
             migrationBuilder.DropTable(
-                name: "Classes");
+                name: "TypeExams");
 
             migrationBuilder.DropTable(
                 name: "Roles");
-
-            migrationBuilder.DropTable(
-                name: "Subjects");
         }
     }
 }

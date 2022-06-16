@@ -1,16 +1,22 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace SRS_LMS.Model
+namespace SRS_LMS.Models
 {
-    public class Document
+    public class Class
     {
-
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public string DocumentId { get; set; }
-        public string Link { get; set; }
+        public int ClassId { get; set; }
+        public string ClassName { get; set; }
+
+        public DateTime StartDate { get; set; }
+
+        public DateTime EndDate { get; set; }
+        public bool Status { get; set; }
+   
         public int SubjectId { get; set; }
         public Subject Subject { get; set; }
+
     }
 }

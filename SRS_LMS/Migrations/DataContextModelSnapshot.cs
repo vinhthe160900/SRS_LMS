@@ -22,7 +22,7 @@ namespace SRS_LMS.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
-            modelBuilder.Entity("SRS_LMS.Model.Class", b =>
+            modelBuilder.Entity("SRS_LMS.Models.Class", b =>
                 {
                     b.Property<int>("ClassId")
                         .ValueGeneratedOnAdd()
@@ -43,10 +43,7 @@ namespace SRS_LMS.Migrations
                     b.Property<bool>("Status")
                         .HasColumnType("bit");
 
-                    b.Property<int?>("SubjectId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("UserId")
+                    b.Property<int>("SubjectId")
                         .HasColumnType("int");
 
                     b.HasKey("ClassId");
@@ -56,7 +53,7 @@ namespace SRS_LMS.Migrations
                     b.ToTable("Classes");
                 });
 
-            modelBuilder.Entity("SRS_LMS.Model.Document", b =>
+            modelBuilder.Entity("SRS_LMS.Models.Document", b =>
                 {
                     b.Property<string>("DocumentId")
                         .ValueGeneratedOnAdd()
@@ -76,17 +73,17 @@ namespace SRS_LMS.Migrations
                     b.ToTable("Documents");
                 });
 
-            modelBuilder.Entity("SRS_LMS.Model.Exam", b =>
+            modelBuilder.Entity("SRS_LMS.Models.Exam", b =>
                 {
                     b.Property<string>("ExamId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("ContentExam")
+                    b.Property<string>("DVT")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("ExamDte")
+                    b.Property<DateTime>("ExamDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("ExamName")
@@ -105,21 +102,16 @@ namespace SRS_LMS.Migrations
                     b.Property<int>("TypeExamId")
                         .HasColumnType("int");
 
-                    b.Property<string>("Unit")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.HasKey("ExamId");
 
-                    b.HasIndex("SubjectId")
-                        .IsUnique();
+                    b.HasIndex("SubjectId");
 
                     b.HasIndex("TypeExamId");
 
                     b.ToTable("Exams");
                 });
 
-            modelBuilder.Entity("SRS_LMS.Model.Question", b =>
+            modelBuilder.Entity("SRS_LMS.Models.Question", b =>
                 {
                     b.Property<int>("QuestionId")
                         .ValueGeneratedOnAdd()
@@ -158,10 +150,10 @@ namespace SRS_LMS.Migrations
 
                     b.HasIndex("SubjectId");
 
-                    b.ToTable("Question");
+                    b.ToTable("Questions");
                 });
 
-            modelBuilder.Entity("SRS_LMS.Model.Result", b =>
+            modelBuilder.Entity("SRS_LMS.Models.Result", b =>
                 {
                     b.Property<int>("ResultId")
                         .ValueGeneratedOnAdd()
@@ -194,7 +186,7 @@ namespace SRS_LMS.Migrations
                     b.ToTable("Results");
                 });
 
-            modelBuilder.Entity("SRS_LMS.Model.Role", b =>
+            modelBuilder.Entity("SRS_LMS.Models.Role", b =>
                 {
                     b.Property<int>("RoleId")
                         .ValueGeneratedOnAdd()
@@ -207,7 +199,6 @@ namespace SRS_LMS.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Status")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("RoleId");
@@ -215,7 +206,7 @@ namespace SRS_LMS.Migrations
                     b.ToTable("Roles");
                 });
 
-            modelBuilder.Entity("SRS_LMS.Model.Schedule", b =>
+            modelBuilder.Entity("SRS_LMS.Models.Schedule", b =>
                 {
                     b.Property<int>("ScheduleId")
                         .ValueGeneratedOnAdd()
@@ -239,16 +230,13 @@ namespace SRS_LMS.Migrations
                     b.ToTable("Schedules");
                 });
 
-            modelBuilder.Entity("SRS_LMS.Model.Subject", b =>
+            modelBuilder.Entity("SRS_LMS.Models.Subject", b =>
                 {
                     b.Property<int>("SubjectId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("SubjectId"), 1L, 1);
-
-                    b.Property<int>("ExamId")
-                        .HasColumnType("int");
 
                     b.Property<int>("NumberOfPeriod")
                         .HasColumnType("int");
@@ -262,7 +250,7 @@ namespace SRS_LMS.Migrations
                     b.ToTable("Subjects");
                 });
 
-            modelBuilder.Entity("SRS_LMS.Model.TypeExam", b =>
+            modelBuilder.Entity("SRS_LMS.Models.TypeExam", b =>
                 {
                     b.Property<int>("TypeExamId")
                         .ValueGeneratedOnAdd()
@@ -275,10 +263,10 @@ namespace SRS_LMS.Migrations
 
                     b.HasKey("TypeExamId");
 
-                    b.ToTable("Types");
+                    b.ToTable("TypeExams");
                 });
 
-            modelBuilder.Entity("SRS_LMS.Model.User", b =>
+            modelBuilder.Entity("SRS_LMS.Models.User", b =>
                 {
                     b.Property<int>("UserId")
                         .ValueGeneratedOnAdd()
@@ -287,13 +275,9 @@ namespace SRS_LMS.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("UserId"), 1L, 1);
 
                     b.Property<string>("Address")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("ClassId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("DateOfBirth")
+                    b.Property<DateTime?>("DateOfBirth")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Email")
@@ -301,58 +285,59 @@ namespace SRS_LMS.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("FirstName")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Image")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("IsEmailConfirmed")
-                        .HasColumnType("bit");
 
                     b.Property<string>("LastName")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<byte[]>("PasswordHash")
+                        .HasColumnType("varbinary(max)");
+
+                    b.Property<string>("PasswordResetToken")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<byte[]>("PasswordSalt")
+                        .HasColumnType("varbinary(max)");
 
                     b.Property<string>("PhoneNumber")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("ROleId")
+                    b.Property<DateTime?>("ResetTokenExpires")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("RoleId")
                         .HasColumnType("int");
 
-                    b.Property<string>("Role")
-                        .IsRequired()
+                    b.Property<string>("VerificationToken")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("UserName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("UserPassword")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<DateTime?>("VerifiedAt")
+                        .HasColumnType("datetime2");
 
                     b.HasKey("UserId");
 
-                    b.HasIndex("ClassId");
-
-                    b.HasIndex("ROleId");
+                    b.HasIndex("RoleId");
 
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("SRS_LMS.Model.Class", b =>
+            modelBuilder.Entity("SRS_LMS.Models.Class", b =>
                 {
-                    b.HasOne("SRS_LMS.Model.Subject", null)
+                    b.HasOne("SRS_LMS.Models.Subject", "Subject")
                         .WithMany("Class")
-                        .HasForeignKey("SubjectId");
+                        .HasForeignKey("SubjectId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Subject");
                 });
 
-            modelBuilder.Entity("SRS_LMS.Model.Document", b =>
+            modelBuilder.Entity("SRS_LMS.Models.Document", b =>
                 {
-                    b.HasOne("SRS_LMS.Model.Subject", "Subject")
+                    b.HasOne("SRS_LMS.Models.Subject", "Subject")
                         .WithMany("Documents")
                         .HasForeignKey("SubjectId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -361,15 +346,15 @@ namespace SRS_LMS.Migrations
                     b.Navigation("Subject");
                 });
 
-            modelBuilder.Entity("SRS_LMS.Model.Exam", b =>
+            modelBuilder.Entity("SRS_LMS.Models.Exam", b =>
                 {
-                    b.HasOne("SRS_LMS.Model.Subject", "Subject")
-                        .WithOne("Exam")
-                        .HasForeignKey("SRS_LMS.Model.Exam", "SubjectId")
+                    b.HasOne("SRS_LMS.Models.Subject", "Subject")
+                        .WithMany()
+                        .HasForeignKey("SubjectId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("SRS_LMS.Model.TypeExam", "TypeExam")
+                    b.HasOne("SRS_LMS.Models.TypeExam", "TypeExam")
                         .WithMany("Exam")
                         .HasForeignKey("TypeExamId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -380,10 +365,10 @@ namespace SRS_LMS.Migrations
                     b.Navigation("TypeExam");
                 });
 
-            modelBuilder.Entity("SRS_LMS.Model.Question", b =>
+            modelBuilder.Entity("SRS_LMS.Models.Question", b =>
                 {
-                    b.HasOne("SRS_LMS.Model.Subject", "Subject")
-                        .WithMany("Question")
+                    b.HasOne("SRS_LMS.Models.Subject", "Subject")
+                        .WithMany("Questions")
                         .HasForeignKey("SubjectId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -391,15 +376,15 @@ namespace SRS_LMS.Migrations
                     b.Navigation("Subject");
                 });
 
-            modelBuilder.Entity("SRS_LMS.Model.Result", b =>
+            modelBuilder.Entity("SRS_LMS.Models.Result", b =>
                 {
-                    b.HasOne("SRS_LMS.Model.Exam", "Exam")
+                    b.HasOne("SRS_LMS.Models.Exam", "Exam")
                         .WithMany()
                         .HasForeignKey("ExamId1")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("SRS_LMS.Model.User", "User")
+                    b.HasOne("SRS_LMS.Models.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -410,9 +395,9 @@ namespace SRS_LMS.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("SRS_LMS.Model.Schedule", b =>
+            modelBuilder.Entity("SRS_LMS.Models.Schedule", b =>
                 {
-                    b.HasOne("SRS_LMS.Model.Subject", "Subject")
+                    b.HasOne("SRS_LMS.Models.Subject", "Subject")
                         .WithMany("Schedules")
                         .HasForeignKey("SubjectId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -421,48 +406,34 @@ namespace SRS_LMS.Migrations
                     b.Navigation("Subject");
                 });
 
-            modelBuilder.Entity("SRS_LMS.Model.User", b =>
+            modelBuilder.Entity("SRS_LMS.Models.User", b =>
                 {
-                    b.HasOne("SRS_LMS.Model.Class", "Class")
+                    b.HasOne("SRS_LMS.Models.Role", "Role")
                         .WithMany("Users")
-                        .HasForeignKey("ClassId")
+                        .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("SRS_LMS.Model.Role", null)
-                        .WithMany("User")
-                        .HasForeignKey("ROleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Class");
+                    b.Navigation("Role");
                 });
 
-            modelBuilder.Entity("SRS_LMS.Model.Class", b =>
+            modelBuilder.Entity("SRS_LMS.Models.Role", b =>
                 {
                     b.Navigation("Users");
                 });
 
-            modelBuilder.Entity("SRS_LMS.Model.Role", b =>
-                {
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("SRS_LMS.Model.Subject", b =>
+            modelBuilder.Entity("SRS_LMS.Models.Subject", b =>
                 {
                     b.Navigation("Class");
 
                     b.Navigation("Documents");
 
-                    b.Navigation("Exam")
-                        .IsRequired();
-
-                    b.Navigation("Question");
+                    b.Navigation("Questions");
 
                     b.Navigation("Schedules");
                 });
 
-            modelBuilder.Entity("SRS_LMS.Model.TypeExam", b =>
+            modelBuilder.Entity("SRS_LMS.Models.TypeExam", b =>
                 {
                     b.Navigation("Exam");
                 });

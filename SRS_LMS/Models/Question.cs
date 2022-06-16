@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace SRS_LMS.Model
+namespace SRS_LMS.Models
 {
     public class Question
     {
@@ -13,9 +13,12 @@ namespace SRS_LMS.Model
         public string AnswerB { get; set; }
         public string AnswerC { get; set; }
         public string AnswerD { get; set; }
-        public string AnswerCorrect { get; set; }
+        public string AnswerCorrect{ get; set; }
+     
+
         public int SubjectId { get; set; }
         public Subject Subject { get; set; }
+
 
     }
 }
